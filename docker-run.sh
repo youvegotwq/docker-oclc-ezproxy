@@ -26,7 +26,7 @@ then
 fi
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Generating missing files (if any) . . ."
 /usr/local/ezproxy/ezproxy -d /usr/local/ezproxy/config -m > /dev/null
-if [ -z $EZPROXY_WSKEY ]
+if [ -z "$EZPROXY_WSKEY" ]
 then
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] \e[33mEZPROXY_WSKEY variable is blank or null.\e[39m"
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Checking for the existance of wskey.key . . ."
@@ -42,7 +42,7 @@ then
     fi
 else
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] EZPROXY_WSKEY variable is set. Applying the WSKey . . ."
-  /usr/local/ezproxy/ezproxy -k $EZPROXY_WSKEY
+  /usr/local/ezproxy/ezproxy -k "$EZPROXY_WSKEY"
 fi
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Starting EZproxy . . ."
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] All logs below are from the EZproxy executable."
