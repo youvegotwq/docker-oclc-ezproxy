@@ -1,19 +1,5 @@
 #!/bin/bash
 
-cat << "EOF"
-
-oooo                                 oooooooo               o8o
-`888                                dP"""""""               `"'
- 888 .oo.   oooo    ooo oo.ooooo.  d88888b.   oooo d8b     oooo   .ooooo.
- 888P"Y88b   `88.  .8'   888' `88b     `Y88b  `888""8P     `888  d88' `88b
- 888   888    `88..8'    888   888       ]88   888          888  888   888
- 888   888     `888'     888   888 o.   .88P   888     .o.  888  888   888
-o888o o888o     .8'      888bod8P' `8bd88P'   d888b    Y8P o888o `Y8bod8P'
-            .o..P'       888
-            `Y8P'       o888o
-
-EOF
-
 echo -e "Thanks for running this Docker container!"
 echo -e ""
 echo -e "----------------------------------------------------------------"
@@ -26,7 +12,7 @@ then
 fi
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Generating missing files (if any) . . ."
 /usr/local/ezproxy/ezproxy -d /usr/local/ezproxy/config -m > /dev/null
-if [ -z $EZPROXY_WSKEY ]
+if [ -z "$EZPROXY_WSKEY" ]
 then
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] \e[33mEZPROXY_WSKEY variable is blank or null.\e[39m"
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Checking for the existance of wskey.key . . ."
@@ -42,7 +28,7 @@ then
     fi
 else
   echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] EZPROXY_WSKEY variable is set. Applying the WSKey . . ."
-  /usr/local/ezproxy/ezproxy -k $EZPROXY_WSKEY
+  /usr/local/ezproxy/ezproxy -k "$EZPROXY_WSKEY"
 fi
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] Starting EZproxy . . ."
 echo -e "[$(date)] [\e[33mdocker-run.sh\e[39m] All logs below are from the EZproxy executable."

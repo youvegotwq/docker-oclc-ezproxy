@@ -58,6 +58,8 @@ services:
 * **network_mode** is recommended to be *host*. Set to *bridge* and uncomment the *ports* config if you'd rather expose ports, but be warned that EZproxy may not function correctly if your EZproxy config is incorrect.
 * **hostname** needs to be a FQDN. For most colleges, this may be something like *ezproxy.myschool.edu*, but the hostname must be applied or EZproxy will not route traffic properly.
 
+> **NOTE**: The container runs EZproxy as a non-root user (UID/GID `999`), not `root`. Make sure `PATH_TO_EZPROXY_CONFIG_FOLDER` on the host is readable/writable by UID `999` (e.g. `chown -R 999:999 PATH_TO_EZPROXY_CONFIG_FOLDER`), especially if you're upgrading from an older image version where the config folder was written as root. The container is still able to bind to privileged ports like 80/443 despite not running as root.
+
 ## Why *Host* Networking is Recommended for this Container
 
 Using the *host* network is recommended for OCLC EZproxy as the config.txt file within the EZproxy config handles exposed ports. Because this is a proxy software, the ports must match exactly what's exposed, and any mismatch between Docker's exposed ports and the ports exposed in config.txt will cause a redirect issue.

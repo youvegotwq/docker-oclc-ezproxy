@@ -1,0 +1,70 @@
+name: Docker Build
+
+# Runs on every PR (regardless of target branch) and on pushes to main,
+# so a broken Dockerfile is caught before it's merged.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # load: true puts the built image into the local Docker daemon
+      # (instead of just a build cache) so later steps can `docker run` it.
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: oclc-ezproxy:ci
+
+      # The container runs as UID 999 (see Dockerfile), so the host
+      # directory it bind-mounts needs to be writable by that UID.
+      - name: Prepare host config directory
+        run: |
+          mkdir -p "${{ github.workspace }}/ci-config"
+          sudo chown -R 999:999 "${{ github.workspace }}/ci-config"
+
+      - name: Run container
+        run: |
+          docker run -d --name ezproxy-test \
+            -h ezproxy-ci.example.com \
+            -e TZ=UTC \
+            -v "${{ github.workspace }}/ci-config:/usr/local/ezproxy/config" \
+            -p 2048:2048 \
+            oclc-ezproxy:ci
+
+      - name: Wait for startup
+        run: sleep 5
+
+      - name: Verify container runs as non-root
+        run: |
+          uid=$(docker exec ezproxy-test id -u)
+          echo "Container UID: $uid"
+          test "$uid" = "999"
+
+      - name: Verify container is still running
+        run: |
+          docker ps --filter "name=ezproxy-test" --filter "status=running" \
+            --format '{{.Names}}' | grep -q ezproxy-test
+
+      # `if: always()` means these run even if an earlier step failed,
+      # so we always get logs and never leave a container behind.
+      - name: Show container logs
+        if: always()
+        run: docker logs ezproxy-test
+
+      - name: Clean up
+        if: always()
+        run: docker rm -f ezproxy-test || true
