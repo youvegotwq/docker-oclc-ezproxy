@@ -12,7 +12,8 @@
 Using the Docker *host* network:
 
 ```sh
-docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROXY_WS_KEY_HERE -v PATH_TO_EZPROXY_CONFIG_FOLDER:/usr/local/ezproxy/config --network=host hyp5r/oclc-ezproxy:latest
+docker build -t oclc-ezproxy .
+docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROXY_WS_KEY_HERE -v PATH_TO_EZPROXY_CONFIG_FOLDER:/usr/local/ezproxy/config --network=host oclc-ezproxy
 ```
 
 #### Not Recommended
@@ -20,7 +21,8 @@ docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROX
 Using the Docker *bridge* network and exposing the default port:
 
 ```sh
-docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROXY_WS_KEY_HERE -v PATH_TO_EZPROXY_CONFIG_FOLDER:/usr/local/ezproxy/config -p 2048:2048 hyp5r/oclc-ezproxy:latest
+docker build -t oclc.ezproxy .
+docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROXY_WS_KEY_HERE -v PATH_TO_EZPROXY_CONFIG_FOLDER:/usr/local/ezproxy/config -p 2048:2048 oclc-ezproxy
 ```
 
 ### Docker Compose
