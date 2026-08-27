@@ -1,9 +1,5 @@
 # docker-oclc-ezproxy
 
-[![GitHub Issues](https://img.shields.io/github/issues/hyp5r/docker-oclc-ezproxy?style=for-the-badge&color=ff1493)](https://github.com/hyp5r/docker-oclc-ezproxy/issues) [![GitHub Stars](https://img.shields.io/github/stars/hyp5r/docker-oclc-ezproxy?style=for-the-badge&color=ff1493)](https://github.com/hyp5r/docker-oclc-ezproxy/stargazers) [![GitHub Forks](https://img.shields.io/github/forks/hyp5r/docker-oclc-ezproxy?style=for-the-badge&color=ff1493)](https://github.com/hyp5r/docker-oclc-ezproxy/network) 
-
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/hyp5r/oclc-ezproxy?style=for-the-badge&color=ff1493) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/hyp5r/oclc-ezproxy/latest?color=ff1493&label=DOCKER%20IMAGE%20SIZE&style=for-the-badge) ![Docker Pulls](https://img.shields.io/docker/pulls/hyp5r/oclc-ezproxy?style=for-the-badge&color=ff1493) 
-
 *A Docker container based on Debian that runs the OCLC EZproxy software.*
 
 ## Running the Container
@@ -30,11 +26,9 @@ docker run -h HOSTNAME.TLD -e TZ=YOUR_TIMEZONE_HERE -e EZPROXY_WSKEY=YOUR_EZPROX
 ### Docker Compose
 
 ```yaml
-version: "3"
-
 services:
   ezproxy:
-    image: hyp5r/oclc-ezproxy:latest
+    build: .
     container_name: oclc-ezproxy
     network_mode: host
     hostname: HOSTNAME.TLD
